@@ -1,0 +1,8 @@
+astro
+.git
+.env
+airflow_settings.yaml
+logs/
+dbt_analytics/logs/
+dbt_analytics/target/
+dbt_analytics/tests/

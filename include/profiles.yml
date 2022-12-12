@@ -1,0 +1,14 @@
+dbt_analytics:
+  outputs:
+    dev:
+      account: gp21411.us-east-1
+      database: DEMO
+      password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}" 
+      role: FIELDENGINEER
+      schema: aws_cosmic_energy 
+      query_tag: dbt
+      threads: 2
+      type: snowflake
+      user: FIELDENGINEER
+      warehouse: ROBOTS
+  target: dev

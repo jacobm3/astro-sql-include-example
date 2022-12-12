@@ -1,0 +1,21 @@
+
+version: 2
+
+models:
+  - name: weather_15_days
+    description: "Chicago Weather Parameters for the last 15 days"
+    columns:
+      - name: date_recrorded
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+
+  - name: weather_IL
+    description: "Weather Elements for IL "
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null

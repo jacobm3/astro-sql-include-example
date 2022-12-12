@@ -1,0 +1,45 @@
+common_config:
+  owner: airflow
+  catchup: False
+  max_active_runs: 1
+  tags: ['scale', 'test']
+
+dags:
+  name: etl_1
+    schedule: '@daily'
+
+    tasks:
+      name: prep
+        type: SnowflakeOperator
+        target:
+          snowflake: snowflake_prod
+          table: aws_raw_cosmic_energy.states
+        sql: "truncate table aws_raw_cosmic_energy.states"
+
+      name: ingest
+        type: S3ToSnowflakeOperator
+        source:
+          s3: aws_prod
+          file: 's3://astronomer-field-engineering-demo/ghcnd-states.txt'
+        target:
+          snowflake: snowflake_prod
+          table: aws_raw_cosmic_energy.states
+        depends_on: ['prep']
+
+      name: clean
+        type: SnowflakeOperatpr
+        source: 
+          snowflake: snowflake_prod
+          table: aws_raw_cosmic_energy.states
+        target:
+          snowflake: snowflake_prod
+          table: aws_cosmic_energy.states
+        sql: "select distinct code from aws_raw_cosmic_energy.states"
+        depends_on: ['ingest']
+
+connections:
+# conn_type: conn_name
+  snowflake_prod: snowflake
+  bigquery: bigquery
+  redshift: redshift
+  http: source_api
